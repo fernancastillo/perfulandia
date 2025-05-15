@@ -13,7 +13,7 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public List<Cliente> getProductos(){
+    public List<Cliente> getClientes(){
         return clienteRepository.obtenerClientes();
     }
 
@@ -25,11 +25,11 @@ public class ClienteService {
         return clienteRepository.buscarPorId(id);
     }
 
-    public Cliente updateProducto (Cliente producto){
-        return clienteRepository.actualizarCliente(producto);
+    public Cliente updateCliente (Cliente cliente){
+        return clienteRepository.actualizarCliente(cliente);
     }
 
-    public String deleteProducto(int id){
+    public String deleteCliente(int id){
         clienteRepository.eliminarCliente(id);
         return "Cliente eliminado";
     }
