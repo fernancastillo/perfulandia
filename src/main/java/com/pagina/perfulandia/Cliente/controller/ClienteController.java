@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 
 @RestController
-@RequestMapping("/api/v1/productos")
+@RequestMapping("/api/v1/clientes")
 public class ClienteController {
     @Autowired
     private ClienteService clienteService;
