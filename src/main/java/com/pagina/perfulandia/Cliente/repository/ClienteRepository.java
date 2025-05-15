@@ -24,7 +24,7 @@ public class ClienteRepository {
        return null;
     }
 
-    public Cliente guardarClientes(Cliente c){
+    public Cliente guardarCliente(Cliente c){
         listaClientes.add(c);
         return c;
     }
