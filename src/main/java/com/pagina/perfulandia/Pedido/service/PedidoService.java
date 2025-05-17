@@ -12,7 +12,7 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public List<Pedido> gePedido(){
+    public List<Pedido> getPedido(){
         return pedidoRepository.obtenerPedidos();
     }
 
@@ -20,7 +20,7 @@ public class PedidoService {
         return pedidoRepository.guardarPedido(pedido);
     }
 
-    public Pedido gePedidoId(int id){
+    public Pedido getPedidoId(int id){
         return pedidoRepository.buscarPorId(id);
     }
     
