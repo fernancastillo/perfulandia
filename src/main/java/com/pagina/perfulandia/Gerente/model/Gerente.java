@@ -27,6 +27,9 @@ public class Gerente {
     @Column(length=80, nullable=false)
     private String correo;
 
+    @Column(length=80, nullable=false)
+    private String contrasenha;
+
     @Column(nullable=true)
     private int num_telefono;
 
