@@ -29,7 +29,7 @@ public class VendedorRepository {
         return p;
     }
 
-    public Vendedor actualizarProducto(Vendedor p){
+    public Vendedor actualizarVendedor(Vendedor p){
         int id = 0;
         int idPosicion = 0;
 
