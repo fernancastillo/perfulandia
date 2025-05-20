@@ -19,7 +19,7 @@ import com.pagina.perfulandia.Vendedor.service.VendedorService;
 
 
 @RestController
-@RequestMapping("/api/v1/Vendedores")
+@RequestMapping("/api/v1/vendedores")
 public class VendedorController {
     @Autowired
     private VendedorService vendedorService;
