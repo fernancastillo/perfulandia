@@ -45,7 +45,7 @@ public class ClienteRepository {
         cliente1.setAp_paterno(c.getAp_paterno());
         cliente1.setAp_materno(c.getAp_materno());
         cliente1.setCorreo(c.getCorreo());
-        cliente1.setContraseña(c.getContraseña());
+        cliente1.setContrasenha(c.getContrasenha());
         cliente1.setNum_telefono(c.getNum_telefono());
 
         listaClientes.set(idPosicion, cliente1);

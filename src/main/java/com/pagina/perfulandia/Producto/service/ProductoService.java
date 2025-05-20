@@ -12,7 +12,7 @@ public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    public List<Producto> geProductos(){
+    public List<Producto> getProductos(){
         return productoRepository.obtenerProductos();
     }
 
@@ -20,7 +20,7 @@ public class ProductoService {
         return productoRepository.guardarProducto(producto);
     }
 
-    public Producto geProductoId(int id){
+    public Producto getProductoId(int id){
         return productoRepository.buscarPorId(id);
     }
 

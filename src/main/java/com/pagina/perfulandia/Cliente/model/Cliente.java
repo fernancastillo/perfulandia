@@ -28,7 +28,7 @@ public class Cliente {
     private String correo;
 
     @Column(nullable=false)
-    private String contraseña;
+    private String contrasenha;
 
     @Column(nullable=true)
     private int num_telefono;

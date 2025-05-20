@@ -20,7 +20,7 @@ public class ProductoController {
 
     @GetMapping
     public List<Producto> listarProductos(){
-        return productoService.geProductos();
+        return productoService.getProductos();
     }
 
     @PostMapping
@@ -30,7 +30,7 @@ public class ProductoController {
 
     @GetMapping("{id}")
     public Producto buscaProducto(@PathVariable int id){
-        return productoService.geProductoId(id);
+        return productoService.getProductoId(id);
     }
     
     @PutMapping("{id}")
