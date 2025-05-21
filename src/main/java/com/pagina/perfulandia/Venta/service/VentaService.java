@@ -30,6 +30,6 @@ public class VentaService {
 
     public String deleteVenta(int id){
         ventaRepository.eliminarVenta(id);
-        return "Producto eliminado";
+        return "Venta eliminada";
     }
 }
