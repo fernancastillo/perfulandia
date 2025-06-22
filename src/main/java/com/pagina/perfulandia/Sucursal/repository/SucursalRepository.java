@@ -50,7 +50,7 @@ public class SucursalRepository {
 
     public void eliminarSucursal(int id){
         Sucursal sucursal = buscarPorId(id);
-        if (sucursal !=null) {
+        if (sucursal  !=null) {
             listaSucursal.remove(sucursal);
             
         }

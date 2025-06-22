@@ -1,0 +1,56 @@
+package com.pagina.perfulandia.controller;
+
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pagina.perfulandia.Administrador.controller.AdministradorController;
+import com.pagina.perfulandia.Administrador.model.Administrador;
+import com.pagina.perfulandia.Administrador.repository.AdministradorRepository;
+
+@WebMvcTest(AdministradorController.class)
+public class AdministradorControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private AdministradorRepository administradorService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    private Administrador administrador;
+
+    @BeforeEach
+    void setUp(){
+        administrador = new Administrador(1, "Luis", "Burgos", "Lavin", "l_burgosl@perfulandia.cl", 
+        "s8d45ap/ilh*/", 954123658, 1200000, 1);
+    }
+
+    @Test
+    public void testGetAllVehiculo() throws Exception{
+        when(administradorService.obtenerAdministradores()).thenReturn(List.of(administrador));
+
+        mockMvc.perform(get("/api/v1/administradores"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(1))
+            .andExpect(jsonPath("$[0].nombre").value("Luis"))
+            .andExpect(jsonPath("$[0].ap_paterno").value("Burgos"))
+            .andExpect(jsonPath("$[0].ap_materno").value("Lavin"))
+            .andExpect(jsonPath("$[0].correo").value("l_burgosl@perfulandia.cl"))
+            .andExpect(jsonPath("$[0].contrasenha").value("s8d45ap/ilh*/"))
+            .andExpect(jsonPath("$[0].num_telefono").value(954123658))
+            .andExpect(jsonPath("$[0].sueldo").value(1200000))
+            .andExpect(jsonPath("$[0].id_sucursal").value(1));
+    }
+}
