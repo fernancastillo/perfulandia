@@ -13,23 +13,24 @@ public class VentaService {
     private VentaRepository ventaRepository;
 
     public List<Venta> getVentas(){
-        return ventaRepository.obtenerVentas();
+        return ventaRepository.findAll();
     }
 
     public Venta saveVenta(Venta venta){
-        return ventaRepository.guardarVenta(venta);
+        return ventaRepository.save(venta);
     }
 
     public Venta getVentaId(int id){
-        return ventaRepository.buscarPorId(id);
+        return ventaRepository.findById(id).orElseThrow(() -> new RuntimeException("Venta no encontrada con ID: " + id));
     }
 
     public Venta updateVenta (Venta venta){
-        return ventaRepository.actualizarVenta(venta);
+        return ventaRepository.save(venta);
     }
 
     public String deleteVenta(int id){
-        ventaRepository.eliminarVenta(id);
+        ventaRepository.deleteById(id);
         return "Venta eliminada";
     }
+    
 }

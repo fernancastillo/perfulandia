@@ -13,23 +13,23 @@ public class SucursalService {
     private SucursalRepository sucursalRepository;
 
     public List<Sucursal> getSucursales(){
-        return sucursalRepository.obtenerSucursales();
+        return sucursalRepository.findAll();
     }
 
     public Sucursal saveSucursal(Sucursal sucursal){
-        return sucursalRepository.guardarSucursal(sucursal);
+        return sucursalRepository.save(sucursal);
     }
 
     public Sucursal getSucursalId(int id){
-        return sucursalRepository.buscarPorId(id);
+        return sucursalRepository.findById(id).orElseThrow(() -> new RuntimeException("Sucursal no encontrada con ID: " + id));
     }
 
     public Sucursal updateSucursal(Sucursal sucursal){
-        return sucursalRepository.actualizarSucursal(sucursal);
+        return sucursalRepository.save(sucursal);
     }
 
     public String deleteSucursal(int id){
-        sucursalRepository.eliminarSucursal(id);
+        sucursalRepository.deleteById(id);
         return "Sucursal Eliminada";
     }
 

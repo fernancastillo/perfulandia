@@ -12,24 +12,24 @@ public class PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public List<Pedido> getPedido(){
-        return pedidoRepository.obtenerPedidos();
+    public List<Pedido> getPedidos(){
+        return pedidoRepository.findAll();
     }
 
     public Pedido savePedido(Pedido pedido){
-        return pedidoRepository.guardarPedido(pedido);
+        return pedidoRepository.save(pedido);
     }
 
     public Pedido getPedidoId(int id){
-        return pedidoRepository.buscarPorId(id);
+        return pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("Pedido no encontrado con ID: " + id));
     }
     
     public Pedido updatePedido (Pedido pedido){
-        return pedidoRepository.actualizarPedido(pedido);
+        return pedidoRepository.save(pedido);
     }
     
     public String deletePedido(int id){
-        pedidoRepository.eliminarPedido(id);
+        pedidoRepository.deleteById(id);
         return "Pedido eliminado";
     }
 }

@@ -14,23 +14,23 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public List<Cliente> getClientes(){
-        return clienteRepository.obtenerClientes();
+        return clienteRepository.findAll();
     }
 
     public Cliente saveCliente(Cliente cliente){
-        return clienteRepository.guardarCliente(cliente);
+        return clienteRepository.save(cliente);
     }
 
     public Cliente getClienteId(int id){
-        return clienteRepository.buscarPorId(id);
+        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + id));
     }
 
     public Cliente updateCliente (Cliente cliente){
-        return clienteRepository.actualizarCliente(cliente);
+        return clienteRepository.save(cliente);
     }
 
     public String deleteCliente(int id){
-        clienteRepository.eliminarCliente(id);
+        clienteRepository.deleteById(id);
         return "Cliente eliminado";
     }
 }

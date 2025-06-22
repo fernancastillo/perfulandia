@@ -13,23 +13,23 @@ public class InventarioService {
     private InventarioRepository inventarioRepository;
 
     public List<Inventario> getInventarios(){
-        return inventarioRepository.obtenerInventarios();
+        return inventarioRepository.findAll();
     }
 
     public Inventario saveInventario(Inventario inventario){
-        return inventarioRepository.guardarInventario(inventario);
+        return inventarioRepository.save(inventario);
     }
 
     public Inventario getInventarioId(int id){
-        return inventarioRepository.buscarPorId(id);
+        return inventarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Inventario no encontrado con ID: " + id));
     }
 
     public Inventario updateInventario(Inventario iventario){
-        return inventarioRepository.actualizarInventario(iventario);
+        return inventarioRepository.save(iventario);
     }
 
     public String deleteInventario(int id){
-        inventarioRepository.eliminarInventario(id);
-        return "Producto Eliminado";
+        inventarioRepository.deleteById(id);
+        return "Inventario Eliminado";
     }
 }

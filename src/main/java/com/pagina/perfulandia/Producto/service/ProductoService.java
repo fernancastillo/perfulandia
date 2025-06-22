@@ -13,23 +13,23 @@ public class ProductoService {
     private ProductoRepository productoRepository;
 
     public List<Producto> getProductos(){
-        return productoRepository.obtenerProductos();
+        return productoRepository.findAll();
     }
 
     public Producto saveProducto(Producto producto){
-        return productoRepository.guardarProducto(producto);
+        return productoRepository.save(producto);
     }
 
     public Producto getProductoId(int id){
-        return productoRepository.buscarPorId(id);
+        return productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + id));
     }
 
     public Producto updateProducto (Producto producto){
-        return productoRepository.actualizarProducto(producto);
+        return productoRepository.save(producto);
     }
 
     public String deleteProducto(int id){
-        productoRepository.eliminarProducto(id);
+        productoRepository.deleteById(id);
         return "Producto eliminado";
     }
 }

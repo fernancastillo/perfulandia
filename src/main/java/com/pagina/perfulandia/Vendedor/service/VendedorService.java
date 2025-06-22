@@ -13,23 +13,23 @@ public class VendedorService {
     private VendedorRepository vendedorRepository;
 
     public List<Vendedor> getVendedores(){
-        return vendedorRepository.obtenerVendedor();
+        return vendedorRepository.findAll();
     }
 
     public Vendedor saveVendedor(Vendedor vendedor){
-        return vendedorRepository.guardarVendedor(vendedor);
+        return vendedorRepository.save(vendedor);
     }
 
     public Vendedor getVendedorId(int id){
-        return vendedorRepository.buscarPorId(id);
+        return vendedorRepository.findById(id).orElseThrow(() -> new RuntimeException("Vendedor no encontrado con ID: " + id));
     }
 
     public Vendedor updateVendedor (Vendedor vendedor){
-        return vendedorRepository.actualizarVendedor(vendedor);
+        return vendedorRepository.save(vendedor);
     }
 
     public String deleteVendedor(int id){
-        vendedorRepository.eliminarVendedor(id);
+        vendedorRepository.deleteById(id);
         return "Vendedor eliminado";
     }
 }

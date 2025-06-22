@@ -14,23 +14,23 @@ public class AdministradorService {
     private AdministradorRepository administradorRepository;
 
     public List<Administrador> getAdministradores(){
-        return administradorRepository.obtenerAdministradores();
+        return administradorRepository.findAll();
     }
 
     public Administrador saveAdministrador(Administrador administrador){
-        return administradorRepository.guardarAdministrador(administrador);
+        return administradorRepository.save(administrador);
     }
 
     public Administrador getAdministradorId(int id){
-        return administradorRepository.buscarPorId(id);
+        return administradorRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador no encontrado con ID: " + id));
     }
 
     public Administrador updateAdministrador (Administrador administrador){
-        return administradorRepository.actualizarAdministrador(administrador);
+        return administradorRepository.save(administrador);
     }
 
     public String deleteAdministrador(int id){
-        administradorRepository.eliminarAdministrador(id);
+        administradorRepository.deleteById(id);
         return "Administrador eliminado";
     }
 }

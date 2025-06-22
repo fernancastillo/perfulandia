@@ -13,24 +13,24 @@ public class ProveedorService {
     @Autowired
     private ProveedorRepository proveedorRepository;
 
-    public List<Proveedor> getProveedor(){
-        return proveedorRepository.obtenerProveedores();
+    public List<Proveedor> getProveedores(){
+        return proveedorRepository.findAll();
     }
 
     public Proveedor saveProveedor(Proveedor proveedor){
-        return proveedorRepository.guardarProveedor(proveedor);
+        return proveedorRepository.save(proveedor);
     }
 
     public Proveedor getProveedorId(int id){
-        return proveedorRepository.buscarPorId(id);
+        return proveedorRepository.findById(id).orElseThrow(() -> new RuntimeException("Proveedor no encontrado con ID: " + id));
     }
 
     public Proveedor updatProveedor(Proveedor proveedor){
-        return proveedorRepository.actualizarProveedor(proveedor);
+        return proveedorRepository.save(proveedor);
     }
 
     public String deleteProveedor(int id){
-        proveedorRepository.eliminarProveedor(id);
+        proveedorRepository.deleteById(id);
         return "Proveedor eliminado";
     }
 

@@ -12,19 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.pagina.perfulandia.Administrador.controller.AdministradorController;
 import com.pagina.perfulandia.Administrador.model.Administrador;
-import com.pagina.perfulandia.Administrador.repository.AdministradorRepository;
+import com.pagina.perfulandia.Administrador.service.AdministradorService;
+
 
 @WebMvcTest(AdministradorController.class)
 public class AdministradorControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private AdministradorRepository administradorService;
+    private AdministradorService administradorService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -33,15 +35,24 @@ public class AdministradorControllerTest {
 
     @BeforeEach
     void setUp(){
-        administrador = new Administrador(1, "Luis", "Burgos", "Lavin", "l_burgosl@perfulandia.cl", 
-        "s8d45ap/ilh*/", 954123658, 1200000, 1);
+        administrador = new Administrador();
+        
+        administrador.setId(1);
+        administrador.setNombre("Luis");
+        administrador.setAp_paterno("Burgos");
+        administrador.setAp_materno("Lavin");
+        administrador.setCorreo("l_burgosl@perfulandia.cl");
+        administrador.setContrasenha("s8d45ap/ilh*/");
+        administrador.setNum_telefono(954123658);
+        administrador.setSueldo(1200000);
+        administrador.setId_sucursal(1);
     }
 
     @Test
-    public void testGetAllVehiculo() throws Exception{
-        when(administradorService.obtenerAdministradores()).thenReturn(List.of(administrador));
+    public void testGetAllAdministradores() throws Exception{
+        when(administradorService.getAdministradores()).thenReturn(List.of(administrador));
 
-        mockMvc.perform(get("/api/v1/administradores"))
+        mockMvc.perform(get("/api/v1/administradores"))//la url de nuestra api
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].id").value(1))
             .andExpect(jsonPath("$[0].nombre").value("Luis"))

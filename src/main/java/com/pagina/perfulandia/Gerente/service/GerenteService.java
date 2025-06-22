@@ -16,23 +16,23 @@ public class GerenteService {
     private GerenteRepository gerenteRepository;
 
     public List<Gerente> getGerentes(){
-        return gerenteRepository.obtenerGerentes();
+        return gerenteRepository.findAll();
     }
 
     public Gerente saveGerente (Gerente gerente){
-        return gerenteRepository.guardarGerente(gerente);
+        return gerenteRepository.save(gerente);
     }
 
     public Gerente getGerenteId(int id){
-        return gerenteRepository.buscarPorId(id);
+        return gerenteRepository.findById(id).orElseThrow(() -> new RuntimeException("Gerente no encontrado con ID: " + id));
     }
 
     public Gerente updateGerente (Gerente gerente){
-        return gerenteRepository.actualizarGerente(gerente);
+        return gerenteRepository.save(gerente);
     }
 
     public String deleteGerente(int id){
-        gerenteRepository.eliminarGerente(id);
+        gerenteRepository.deleteById(id);
         return "Gerente eliminado";
     }
 }
