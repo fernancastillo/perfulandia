@@ -45,7 +45,8 @@ public class AdministradorController {
     @Operation(summary = "Buscar un administrador", description =  "Busca un administrador en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Administrador encontrado exitosamente"),  
-        @ApiResponse(responseCode = "404", description = "Administrador no encontrado")
+        @ApiResponse(responseCode = "404", description = "Administrador no encontrado"),
+        @ApiResponse(responseCode = "500", description = "Administrador no encontrado")
     }) 
     public Administrador buscaAdministrador(@PathVariable int id){
         return administradorService.getAdministradorId(id);
@@ -57,7 +58,8 @@ public class AdministradorController {
         @ApiResponse(responseCode = "200", description = "Administrador actualizado exitosamente",  
             content = @Content(mediaType = "application/json", 
                 schema = @Schema(implementation = Administrador.class))),
-        @ApiResponse(responseCode = "404", description = "Administrador no encontrado")
+        @ApiResponse(responseCode = "404", description = "Administrador no encontrado"),
+        @ApiResponse(responseCode = "406", description = "Administrador no encontrado")
     }) 
     public Administrador actualizaAdministrador(@PathVariable int id, @RequestBody Administrador administrador){
         return administradorService.updateAdministrador(administrador);
