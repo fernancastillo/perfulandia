@@ -4,6 +4,8 @@ package com.pagina.perfulandia.Administrador.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.pagina.perfulandia.Administrador.model.Administrador;
@@ -34,17 +36,20 @@ public class AdministradorController {
     @PostMapping
     @Operation(summary = "Agregar un administrador", description =  "Agrega un administrador a la base de datos de Perfulandia")
     @ApiResponses (value = {
-        @ApiResponse(responseCode = "200", description = "Administrador agregado exitosamente"),  
+        @ApiResponse(responseCode = "200", description = "Administrador agregado exitosamente"),
+        @ApiResponse(responseCode = "201", description = "Administrador agregado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Administrador ya existe")
     }) 
-    public Administrador agregarAdministrador(@RequestBody Administrador administrador){
-        return administradorService.saveAdministrador(administrador);    
+    public ResponseEntity<Administrador> agregarAdministrador(@RequestBody Administrador administrador){
+        Administrador nuevoAdministrador = administradorService.saveAdministrador(administrador);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoAdministrador);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un administrador", description =  "Busca un administrador en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
-        @ApiResponse(responseCode = "200", description = "Administrador encontrado exitosamente"),  
+        @ApiResponse(responseCode = "200", description = "Administrador encontrado exitosamente"),
+        @ApiResponse(responseCode = "201", description = "Administrador encontrado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Administrador no encontrado")
     }) 
     public Administrador buscaAdministrador(@PathVariable int id){
@@ -56,7 +61,7 @@ public class AdministradorController {
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Administrador actualizado exitosamente",  
             content = @Content(mediaType = "application/json", 
-                schema = @Schema(implementation = Administrador.class))),
+            schema = @Schema(implementation = Administrador.class))),
         @ApiResponse(responseCode = "404", description = "Administrador no encontrado")
     }) 
     public Administrador actualizaAdministrador(@PathVariable int id, @RequestBody Administrador administrador){
@@ -68,10 +73,12 @@ public class AdministradorController {
     @Operation(summary = "Eliminar un administrador", description =  "Elimina un administrador de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Administrador eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Administrador eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Administrador no encontrado")
     }) 
-    public String eliminarAdministrador(@PathVariable int id){
-        return administradorService.deleteAdministrador(id);
+    public ResponseEntity<String> eliminarAdministrador(@PathVariable int id){
+        String mensaje = administradorService.deleteAdministrador(id);
+        return ResponseEntity.ok(mensaje);
     }
 
 }

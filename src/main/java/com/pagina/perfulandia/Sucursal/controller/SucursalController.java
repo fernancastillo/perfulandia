@@ -3,6 +3,8 @@ package com.pagina.perfulandia.Sucursal.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.pagina.perfulandia.Sucursal.model.Sucursal;
@@ -32,16 +34,19 @@ public class SucursalController {
     @Operation(summary = "Agregar una sucursal", description =  "Agrega una sucursal a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Sucursal agregada exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Sucursal agregada exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Sucursal ya existe")
     }) 
-    public Sucursal agregarSucursal(@RequestBody Sucursal sucursal){
-        return sucursalService.saveSucursal(sucursal);
+    public ResponseEntity<Sucursal> agregarSucursal(@RequestBody Sucursal sucursal){
+        Sucursal nuevaSucursal = sucursalService.saveSucursal(sucursal);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaSucursal);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar una sucursal", description =  "Busca una sucursal en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Sucursal encontrada exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Sucursal encontrada exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Sucursal no encontrada")
     }) 
     public Sucursal buscarSucursal(@PathVariable int id){
@@ -67,8 +72,9 @@ public class SucursalController {
         @ApiResponse(responseCode = "200", description = "Sucursal eliminada exitosamente"),  
         @ApiResponse(responseCode = "404", description = "Sucursal no encontrada")
     }) 
-    public String eliminarSucursal(@PathVariable int id){
-        return sucursalService.deleteSucursal(id);
+    public ResponseEntity<String> eliminarSucursal(@PathVariable int id){
+        String mensaje = sucursalService.deleteSucursal(id);
+        return ResponseEntity.ok(mensaje);
     }
 
 

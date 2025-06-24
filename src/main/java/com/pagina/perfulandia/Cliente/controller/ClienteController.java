@@ -3,8 +3,9 @@ package com.pagina.perfulandia.Cliente.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import com.pagina.perfulandia.Cliente.model.Cliente;
 import com.pagina.perfulandia.Cliente.service.ClienteService;
@@ -35,16 +36,19 @@ public class ClienteController {
     @Operation(summary = "Agregar un cliente", description =  "Agrega un cliente a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Cliente agregado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Cliente agregado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Cliente ya existe")
     }) 
-    public Cliente agregarCliente(@RequestBody Cliente cliente){
-        return clienteService.saveCliente(cliente);    
+    public ResponseEntity<Cliente> agregarCliente(@RequestBody Cliente cliente){
+        Cliente nuevoCliente = clienteService.saveCliente(cliente);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);   
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un cliente", description =  "Busca un cliente en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Cliente encontrado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Cliente encontrado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
     }) 
     public Cliente buscarCliente(@PathVariable int id){
@@ -68,10 +72,12 @@ public class ClienteController {
     @Operation(summary = "Eliminar un cliente", description =  "Elimina un cliente de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Cliente eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Cliente eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
     }) 
-    public String eliminarCliente(@PathVariable int id){
-        return clienteService.deleteCliente(id);
+    public ResponseEntity<String> eliminarCliente(@PathVariable int id){
+        String mensaje = clienteService.deleteCliente(id);
+        return ResponseEntity.ok(mensaje);
     }
 
 

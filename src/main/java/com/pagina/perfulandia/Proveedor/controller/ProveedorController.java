@@ -3,6 +3,8 @@ package com.pagina.perfulandia.Proveedor.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.pagina.perfulandia.Proveedor.model.Proveedor;
@@ -32,16 +34,19 @@ public class ProveedorController {
     @Operation(summary = "Agregar un proveedor", description =  "Agrega un proveedor a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Proveedor agregado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Proveedor agregado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Proveedor ya existe")
     })
-    public Proveedor agregarProveedor(@RequestBody Proveedor proveedor){
-        return proveedorService.saveProveedor(proveedor);
+    public ResponseEntity<Proveedor> agregarProveedor(@RequestBody Proveedor proveedor){
+        Proveedor nuevoProveedor = proveedorService.saveProveedor(proveedor);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoProveedor);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un proveedor", description =  "Busca un proveedor en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Proveedor encontrado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Proveedor encontrado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Proveedor no encontrado")
     }) 
     public Proveedor buscarProveedor(@PathVariable int id){
@@ -65,10 +70,12 @@ public class ProveedorController {
     @Operation(summary = "Eliminar un proveedor", description =  "Elimina un proveedor de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Proveedor eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Proveedor eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Proveedor no encontrado")
     }) 
-    public String eliminarProveedor(@PathVariable int id){
-        return proveedorService.deleteProveedor(id);
+    public ResponseEntity<String> eliminarProveedor(@PathVariable int id){
+        String mensaje = proveedorService.deleteProveedor(id);
+        return ResponseEntity.ok(mensaje);
     }
 
 }

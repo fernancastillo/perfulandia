@@ -4,6 +4,8 @@ package com.pagina.perfulandia.Pedido.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.pagina.perfulandia.Pedido.model.Pedido;
 import com.pagina.perfulandia.Pedido.service.PedidoService;
@@ -41,16 +42,19 @@ public class PedidoController {
     @Operation(summary = "Agregar un pedido", description =  "Agrega un pedido a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Pedido agregado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Pedido agregado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Pedido ya existe")
     }) 
-    public Pedido agregarPedido(@RequestBody Pedido pedido){
-        return pedidoService.savePedido(pedido);    
+    public ResponseEntity<Pedido> agregarPedido(@RequestBody Pedido pedido){
+        Pedido nuevoPedido = pedidoService.savePedido(pedido);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoPedido);    
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un pedido", description =  "Busca un pedido en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Pedido encontrado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Pedido encontrado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     }) 
     public Pedido buscaPedido(@PathVariable int id){
@@ -74,10 +78,12 @@ public class PedidoController {
     @Operation(summary = "Eliminar un pedido", description =  "Elimina un pedido de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Pedido eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Pedido eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     }) 
-    public String eliminarPedido(@PathVariable int id){
-        return pedidoService.deletePedido(id);
+    public ResponseEntity<String> eliminarPedido(@PathVariable int id){
+        String mensaje = pedidoService.deletePedido(id);
+        return ResponseEntity.ok(mensaje);
     }
 
 

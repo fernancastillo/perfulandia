@@ -3,8 +3,9 @@ package com.pagina.perfulandia.Inventario.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import com.pagina.perfulandia.Inventario.model.Inventario;
 import com.pagina.perfulandia.Inventario.service.InventarioService;
@@ -34,16 +35,19 @@ public class InventarioController {
     @Operation(summary = "Agregar un inventario", description =  "Agrega un inventario a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Inventario agregado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Inventario agregado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Inventario ya existe")
     }) 
-    public Inventario agregarInventario(@RequestBody Inventario inventario){
-        return inventarioService.saveInventario(inventario);
+    public ResponseEntity<Inventario> agregarInventario(@RequestBody Inventario inventario){
+        Inventario nuevoInventario = inventarioService.saveInventario(inventario);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoInventario);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un inventario", description =  "Busca un inventario en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Inventario encontrado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Inventario encontrado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Inventario no encontrado")
     }) 
     public Inventario buscarInventario(@PathVariable int id){
@@ -67,9 +71,11 @@ public class InventarioController {
     @Operation(summary = "Eliminar un inventario", description =  "Elimina un inventario de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Inventario eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Inventario eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Inventario no encontrado")
     }) 
-    public String eliminarInventario(@PathVariable int id){
-        return inventarioService.deleteInventario(id);
+    public ResponseEntity<String> eliminarInventario(@PathVariable int id){
+        String mensaje = inventarioService.deleteInventario(id);
+        return ResponseEntity.ok(mensaje);
     }
 }

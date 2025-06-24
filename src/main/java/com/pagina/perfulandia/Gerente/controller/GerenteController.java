@@ -3,6 +3,8 @@ package com.pagina.perfulandia.Gerente.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.pagina.perfulandia.Gerente.model.Gerente;
@@ -33,16 +35,19 @@ public class GerenteController {
     @Operation(summary = "Agregar un gerente", description =  "Agrega un gerente a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Gerente agregado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Gerente agregado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Gerente ya existe")
     })
-    public Gerente agregarGerente(@RequestBody Gerente gerente){
-        return gerenteService.saveGerente(gerente);    
+    public ResponseEntity<Gerente> agregarGerente(@RequestBody Gerente gerente){
+        Gerente nuevoGerente = gerenteService.saveGerente(gerente);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoGerente);   
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un gerente", description =  "Busca un gerente en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Gerente encontrado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Gerente encontrado exitosamente"), 
         @ApiResponse(responseCode = "404", description = "Gerente no encontrado")
     }) 
     public Gerente buscarGerente(@PathVariable int id){
@@ -66,10 +71,12 @@ public class GerenteController {
     @Operation(summary = "Eliminar un gerente", description =  "Elimina un gerente de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Gerente eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Gerente eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Gerente no encontrado")
     }) 
-    public String eliminarProducto(@PathVariable int id){
-        return gerenteService.deleteGerente(id);
+    public ResponseEntity<String> eliminarProducto(@PathVariable int id){
+        String mensaje = gerenteService.deleteGerente(id);
+        return ResponseEntity.ok(mensaje);
     }
     
 }

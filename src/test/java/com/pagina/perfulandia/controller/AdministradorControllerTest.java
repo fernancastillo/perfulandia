@@ -8,9 +8,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.verification.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -63,5 +65,76 @@ public class AdministradorControllerTest {
             .andExpect(jsonPath("$[0].num_telefono").value(954123658))
             .andExpect(jsonPath("$[0].sueldo").value(1200000))
             .andExpect(jsonPath("$[0].id_sucursal").value(1));
+    }
+
+    @Test
+    public void testGetAdministradorById() throws Exception {
+
+        int id = 1;
+        when(administradorService.getAdministradorId(id)).thenReturn(administrador);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/api/v1/administradores/" + id))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.nombre").value("Luis"))
+            .andExpect(jsonPath("$.ap_paterno").value("Burgos"))
+            .andExpect(jsonPath("$.ap_materno").value("Lavin"))
+            .andExpect(jsonPath("$.correo").value("l_burgosl@perfulandia.cl"))
+            .andExpect(jsonPath("$.contrasenha").value("s8d45ap/ilh*/"))
+            .andExpect(jsonPath("$.num_telefono").value(954123658))
+            .andExpect(jsonPath("$.sueldo").value(1200000))
+            .andExpect(jsonPath("$.id_sucursal").value(1));
+    }
+
+    @Test
+    public void testCreateAdministrador() throws Exception {
+
+        when(administradorService.saveAdministrador(administrador)).thenReturn(administrador);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/administradores")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(administrador)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.nombre").value("Luis"))
+                .andExpect(jsonPath("$.ap_paterno").value("Burgos"))
+                .andExpect(jsonPath("$.ap_materno").value("Lavin"))
+                .andExpect(jsonPath("$.correo").value("l_burgosl@perfulandia.cl"))
+                .andExpect(jsonPath("$.contrasenha").value("s8d45ap/ilh*/"))
+                .andExpect(jsonPath("$.num_telefono").value(954123658))
+                .andExpect(jsonPath("$.sueldo").value(1200000))
+                .andExpect(jsonPath("$.id_sucursal").value(1));
+    }
+
+    @Test
+    public void testUpdateAdministrador() throws Exception {
+
+        int id = 1;
+        administrador.setId(id);
+        when(administradorService.updateAdministrador(administrador)).thenReturn(administrador);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/v1/administradores/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(administrador)))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Luis"))
+                .andExpect(jsonPath("$.ap_paterno").value("Burgos"))
+                .andExpect(jsonPath("$.ap_materno").value("Lavin"))
+                .andExpect(jsonPath("$.correo").value("l_burgosl@perfulandia.cl"))
+                .andExpect(jsonPath("$.contrasenha").value("s8d45ap/ilh*/"))
+                .andExpect(jsonPath("$.num_telefono").value(954123658))
+                .andExpect(jsonPath("$.sueldo").value(1200000))
+                .andExpect(jsonPath("$.id_sucursal").value(1));
+    }
+
+    @Test
+    public void testDeleteAdministrador() throws Exception {
+        int id = 1;
+
+        when(administradorService.deleteAdministrador(id)).thenReturn("Administrador eliminado con éxito");
+        
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete("/api/v1/administradores/" + id))
+            .andExpect(status().isOk())
+            .andExpect(content().string("Administrador eliminado con éxito"));
+
+        verify(administradorService, times(1)).deleteAdministrador(id);
     }
 }

@@ -4,6 +4,8 @@ package com.pagina.perfulandia.Vendedor.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,16 +42,19 @@ public class VendedorController {
     @Operation(summary = "Agregar un vendedor", description =  "Agrega un vendedor a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Vendedor agregado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Vendedor agregado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Vendedor ya existe")
     }) 
-    public Vendedor agregarVendedor(@RequestBody Vendedor vendedor){
-        return vendedorService.saveVendedor(vendedor);    
+    public ResponseEntity<Vendedor> agregarVendedor(@RequestBody Vendedor vendedor){
+        Vendedor nuevoVendedor = vendedorService.saveVendedor(vendedor);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoVendedor);    
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un vendedor", description =  "Busca un vendedor en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Vendedor encontrado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Vendedor encontrado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Vendedor no encontrado")
     }) 
     public Vendedor buscaVendedor(@PathVariable int id){
@@ -73,10 +78,12 @@ public class VendedorController {
     @Operation(summary = "Eliminar un vendedor", description =  "Elimina un vendedor de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Vendedor eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Vendedor eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Vendedor no encontrado")
     }) 
-    public String eliminarVendedor(@PathVariable int id){
-        return vendedorService.deleteVendedor(id);
+    public ResponseEntity<String> eliminarVendedor(@PathVariable int id){
+        String mensaje = vendedorService.deleteVendedor(id);
+        return ResponseEntity.ok(mensaje);
     }
 
 

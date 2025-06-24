@@ -4,6 +4,8 @@ package com.pagina.perfulandia.Producto.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.pagina.perfulandia.Producto.model.Producto;
@@ -33,16 +35,19 @@ public class ProductoController {
     @Operation(summary = "Agregar un producto", description =  "Agrega un producto a la base de datos de Perfulandia")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Producto agregado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Producto agregado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Producto ya existe")
     }) 
-    public Producto agregarProducto(@RequestBody Producto producto){
-        return productoService.saveProducto(producto);    
+    public ResponseEntity<Producto> agregarProducto(@RequestBody Producto producto){
+        Producto nuevoProducto = productoService.saveProducto(producto);    
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoProducto);    
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar un producto", description =  "Busca un producto en la base de datos de Perfulandia por su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Producto encontrado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Producto encontrado exitosamente"),   
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     }) 
     public Producto buscaProducto(@PathVariable int id){
@@ -66,10 +71,12 @@ public class ProductoController {
     @Operation(summary = "Eliminar un producto", description =  "Elimina un producto de la base de datos de Perfulandia con su ID")
     @ApiResponses (value = {
         @ApiResponse(responseCode = "200", description = "Producto eliminado exitosamente"),  
+        @ApiResponse(responseCode = "201", description = "Producto eliminado exitosamente"),
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     }) 
-    public String eliminarProducto(@PathVariable int id){
-        return productoService.deleteProducto(id);
+    public ResponseEntity<String> eliminarProducto(@PathVariable int id){
+        String mensaje = productoService.deleteProducto(id);
+        return ResponseEntity.ok(mensaje);
     }
 
 
