@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,6 +63,77 @@ public class GerenteControllerTest {
             .andExpect(jsonPath("$[0].num_telefono").value(954873299))
             .andExpect(jsonPath("$[0].sueldo").value(10200000))
             .andExpect(jsonPath("$[0].id_sucursal").value(1));
+    }
+
+        @Test
+    public void testGetGerenteById() throws Exception {
+
+        int id = 1;
+        when(gerenteService.getGerenteId(id)).thenReturn(gerente);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/api/v1/gerentes/" + id))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.nombre").value("Jose"))
+            .andExpect(jsonPath("$.ap_paterno").value("Penaloza"))
+            .andExpect(jsonPath("$.ap_materno").value("Robinson"))
+            .andExpect(jsonPath("$.correo").value("j_penalozar@perfulandia.cl"))
+            .andExpect(jsonPath("$.contrasenha").value("ap/i s45lh*8d"))
+            .andExpect(jsonPath("$.num_telefono").value(954873299))
+            .andExpect(jsonPath("$.sueldo").value(10200000))
+            .andExpect(jsonPath("$.id_sucursal").value(1));
+    }
+
+    @Test
+    public void testCreateGerente() throws Exception {
+
+        when(gerenteService.saveGerente(gerente)).thenReturn(gerente);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/gerentes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(gerente)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.nombre").value("Jose"))
+                .andExpect(jsonPath("$.ap_paterno").value("Penaloza"))
+                .andExpect(jsonPath("$.ap_materno").value("Robinson"))
+                .andExpect(jsonPath("$.correo").value("j_penalozar@perfulandia.cl"))
+                .andExpect(jsonPath("$.contrasenha").value("ap/i s45lh*8d"))
+                .andExpect(jsonPath("$.num_telefono").value(954873299))
+                .andExpect(jsonPath("$.sueldo").value(10200000))
+                .andExpect(jsonPath("$.id_sucursal").value(1));
+    }
+
+    @Test
+    public void testUpdateGerente() throws Exception {
+
+        int id = 1;
+        gerente.setId(id);
+        when(gerenteService.updateGerente(gerente)).thenReturn(gerente);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/v1/gerentes/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(gerente)))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Jose"))
+                .andExpect(jsonPath("$.ap_paterno").value("Penaloza"))
+                .andExpect(jsonPath("$.ap_materno").value("Robinson"))
+                .andExpect(jsonPath("$.correo").value("j_penalozar@perfulandia.cl"))
+                .andExpect(jsonPath("$.contrasenha").value("ap/i s45lh*8d"))
+                .andExpect(jsonPath("$.num_telefono").value(954873299))
+                .andExpect(jsonPath("$.sueldo").value(10200000))
+                .andExpect(jsonPath("$.id_sucursal").value(1));
+    }
+
+    @Test
+    public void testDeleteGerente() throws Exception {
+        int id = 1;
+
+        when(gerenteService.deleteGerente(id)).thenReturn("Gerente eliminado con éxito");
+        
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete("/api/v1/gerentes/" + id))
+            .andExpect(status().isOk())
+            .andExpect(content().string("Gerente eliminado con éxito"));
+
+        verify(gerenteService, times(1)).deleteGerente(id);
     }
 
 }

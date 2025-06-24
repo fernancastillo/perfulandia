@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -56,5 +57,67 @@ public class ProductoControllerTest {
             .andExpect(jsonPath("$[0].precio").value(109990))
             .andExpect(jsonPath("$[0].stock").value(26))
             .andExpect(jsonPath("$[0].categoria").value("Perfume Mujer"));            
+    }
+
+    @Test
+    public void testGetProductoById() throws Exception {
+
+        int id = 1;
+        when(productoService.getProductoId(id)).thenReturn(producto);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get("/api/v1/productos/" + id))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.nombre").value("Perfume Good Girl EDP 80Ml"))
+            .andExpect(jsonPath("$.descripcion").value("Su elegante botella, con forma de tacón, es un símbolo de poder y seducción."))
+            .andExpect(jsonPath("$.precio").value(109990))
+            .andExpect(jsonPath("$.stock").value(26))
+            .andExpect(jsonPath("$.categoria").value("Perfume Mujer"));
+    }
+
+    @Test
+    public void testCreateProducto() throws Exception {
+
+        when(productoService.saveProducto(producto)).thenReturn(producto);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/v1/productos")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(producto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.nombre").value("Perfume Good Girl EDP 80Ml"))
+                .andExpect(jsonPath("$.descripcion").value("Su elegante botella, con forma de tacón, es un símbolo de poder y seducción."))
+                .andExpect(jsonPath("$.precio").value(109990))
+                .andExpect(jsonPath("$.stock").value(26))
+                .andExpect(jsonPath("$.categoria").value("Perfume Mujer"));
+    }
+
+    @Test
+    public void testUpdateProducto() throws Exception {
+
+        int id = 1;
+        producto.setId(id);
+        when(productoService.updateProducto(producto)).thenReturn(producto);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/v1/productos/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(producto)))
+                .andExpect(org.springframework.test.web.servlet.result.MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.nombre").value("Perfume Good Girl EDP 80Ml"))
+                .andExpect(jsonPath("$.descripcion").value("Su elegante botella, con forma de tacón, es un símbolo de poder y seducción."))
+                .andExpect(jsonPath("$.precio").value(109990))
+                .andExpect(jsonPath("$.stock").value(26))
+                .andExpect(jsonPath("$.categoria").value("Perfume Mujer"));
+    }
+
+    @Test
+    public void testDeleteProducto() throws Exception {
+        int id = 1;
+
+        when(productoService.deleteProducto(id)).thenReturn("Producto eliminado con éxito");
+        
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete("/api/v1/productos/" + id))
+            .andExpect(status().isOk())
+            .andExpect(content().string("Producto eliminado con éxito"));
+
+        verify(productoService, times(1)).deleteProducto(id);
     }
 }
