@@ -58,6 +58,7 @@ public class GerenteController {
         @ApiResponse(responseCode = "404", description = "Gerente no encontrado")
     }) 
     public Gerente actualizarGerente(@PathVariable int id, @RequestBody Gerente gerente){
+        gerente.setId(id);
         return gerenteService.updateGerente(gerente);
     }
     

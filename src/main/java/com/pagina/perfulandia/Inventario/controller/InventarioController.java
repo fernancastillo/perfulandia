@@ -59,6 +59,7 @@ public class InventarioController {
         @ApiResponse(responseCode = "404", description = "Inventario no encontrado")
     }) 
     public Inventario actualizarInventario(@PathVariable int id, @RequestBody Inventario inventario){
+        inventario.setId(id);
         return inventarioService.updateInventario(inventario);
     }
 

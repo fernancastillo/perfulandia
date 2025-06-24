@@ -1,5 +1,6 @@
 package com.pagina.perfulandia.Sucursal.service;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class SucursalService {
     }
 
     public Sucursal saveSucursal(Sucursal sucursal){
+        if (sucursal.getId() != 0) {
+        throw new IllegalArgumentException("No se debe enviar un ID al crear una nueva sucursal");
+    }
         return sucursalRepository.save(sucursal);
     }
 
@@ -25,10 +29,18 @@ public class SucursalService {
     }
 
     public Sucursal updateSucursal(Sucursal sucursal){
+        Optional<Sucursal> existente = sucursalRepository.findById(sucursal.getId());
+        if (!existente.isPresent()) {
+        throw new RuntimeException("Sucursal no encontrada");
+    }
         return sucursalRepository.save(sucursal);
     }
 
     public String deleteSucursal(int id){
+        Optional<Sucursal> existente = sucursalRepository.findById(id);
+        if (!existente.isPresent()) {
+        throw new RuntimeException("Sucursal con ID " + id + " no encontrado");
+    }
         sucursalRepository.deleteById(id);
         return "Sucursal Eliminada";
     }

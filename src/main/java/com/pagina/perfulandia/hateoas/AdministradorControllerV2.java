@@ -1,32 +1,34 @@
 package com.pagina.perfulandia.hateoas;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.pagina.perfulandia.Administrador.model.Administrador;
 import com.pagina.perfulandia.Administrador.repository.AdministradorRepository;
 import com.pagina.perfulandia.assemblers.AdministradorModelAssembler;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/v2/administradores")
-@Tag(name="Administrador", description = "CRUD de los administradores")
+@Tag(name="Administrador HATEOAS", description = "CRUD de los administradores de Perfulandia mediante HATEOAS")
 public class AdministradorControllerV2 {
 
     @Autowired
@@ -46,9 +48,12 @@ public class AdministradorControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<Administrador> getAdministradorById(@PathVariable int id) {
-        Administrador administrador = administradorRepository.getById(id);
-        return assembler.toModel(administrador);
+    public ResponseEntity<EntityModel<Administrador>> getAdministradorById(@PathVariable int id) {
+        Administrador administrador = administradorRepository.findById(id).orElse(null);
+        if (administrador == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(assembler.toModel(administrador));
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
@@ -61,6 +66,10 @@ public class AdministradorControllerV2 {
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Administrador>> updateAdministrador(@PathVariable int id, @RequestBody Administrador administrador) {
+        Administrador existingAdministrador = administradorRepository.findById(id).orElse(null);
+        if (existingAdministrador == null) {
+            return ResponseEntity.notFound().build();
+        }
         administrador.setId(id);
         Administrador updatedAdministrador = administradorRepository.save(administrador);
         return ResponseEntity
@@ -69,6 +78,10 @@ public class AdministradorControllerV2 {
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<?> deleteAdministrador(@PathVariable int id) {
+        Administrador administrador = administradorRepository.findById(id).orElse(null);
+        if (administrador == null) {
+            return ResponseEntity.notFound().build(); 
+        }
         administradorRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }

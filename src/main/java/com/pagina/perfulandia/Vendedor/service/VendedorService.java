@@ -1,5 +1,6 @@
 package com.pagina.perfulandia.Vendedor.service;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class VendedorService {
     }
 
     public Vendedor saveVendedor(Vendedor vendedor){
+        if (vendedor.getId() != 0) {
+        throw new IllegalArgumentException("No se debe enviar un ID al crear un nuevo vendedor");
+    }
         return vendedorRepository.save(vendedor);
     }
 
@@ -25,10 +29,18 @@ public class VendedorService {
     }
 
     public Vendedor updateVendedor (Vendedor vendedor){
+        Optional<Vendedor> existente = vendedorRepository.findById(vendedor.getId());
+        if (!existente.isPresent()) {
+        throw new RuntimeException("Vendedor no encontrado");
+    }
         return vendedorRepository.save(vendedor);
     }
 
     public String deleteVendedor(int id){
+        Optional<Vendedor> existente = vendedorRepository.findById(id);
+        if (!existente.isPresent()) {
+        throw new RuntimeException("Vendedor con ID " + id + " no encontrado");
+    }
         vendedorRepository.deleteById(id);
         return "Vendedor eliminado";
     }

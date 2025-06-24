@@ -58,6 +58,7 @@ public class ProductoController {
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     }) 
     public Producto actualizaProducto(@PathVariable int id, @RequestBody Producto producto){
+        producto.setId(id);
         return productoService.updateProducto(producto);
     }
     

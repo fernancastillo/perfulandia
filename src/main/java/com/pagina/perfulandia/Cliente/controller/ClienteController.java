@@ -60,6 +60,7 @@ public class ClienteController {
         @ApiResponse(responseCode = "404", description = "Cliente no encontrado")
     }) 
     public Cliente actualizarCliente(@PathVariable int id, @RequestBody Cliente cliente){
+        cliente.setId(id);
         return clienteService.updateCliente(cliente);
     }
     

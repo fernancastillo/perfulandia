@@ -57,6 +57,7 @@ public class SucursalController {
         @ApiResponse(responseCode = "404", description = "Sucursal no encontrada")
     }) 
     public Sucursal actualizarSucursal(@PathVariable int id, @RequestBody Sucursal sucursal){
+        sucursal.setId(id);
         return sucursalService.updateSucursal(sucursal);
     }
 

@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/v1/pedidos")
-@Tag(name = "Pedidos", description = "CRUD de los pedidos de Perfulandia")
+@Tag(name = "Pedido", description = "CRUD de los pedidos de Perfulandia")
 public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
@@ -66,6 +66,7 @@ public class PedidoController {
         @ApiResponse(responseCode = "404", description = "Pedido no encontrado")
     }) 
     public Pedido actualizaPedido(@PathVariable int id, @RequestBody Pedido pedido){
+        pedido.setId(id);
         return pedidoService.updatePedido(pedido);
     }
     

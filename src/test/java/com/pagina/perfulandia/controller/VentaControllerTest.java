@@ -52,7 +52,7 @@ public class VentaControllerTest {
         venta.setId_emp(1);
         venta.setId_cli(1);
         venta.setTotal(35000);
-        venta.setDescuento(0);
+        venta.setDescuento(Float.valueOf(0));
     }
 
     @Test

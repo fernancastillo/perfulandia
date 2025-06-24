@@ -57,7 +57,8 @@ public class ProveedorController {
         @ApiResponse(responseCode = "404", description = "Proveedor no encontrado")
     }) 
     public Proveedor actualizarProveedor(@PathVariable int id, @RequestBody Proveedor proveedor){
-        return proveedorService.updatProveedor(proveedor);
+        proveedor.setId(id);
+        return proveedorService.updateProveedor(proveedor);
     }
 
     @DeleteMapping("/{id}")

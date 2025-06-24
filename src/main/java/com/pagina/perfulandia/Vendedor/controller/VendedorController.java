@@ -65,6 +65,7 @@ public class VendedorController {
         @ApiResponse(responseCode = "404", description = "Vendedor no encontrado")
     }) 
     public Vendedor actualizaVendedor(@PathVariable int id, @RequestBody Vendedor vendedor){
+        vendedor.setId(id);
         return vendedorService.updateVendedor(vendedor);
     }
     

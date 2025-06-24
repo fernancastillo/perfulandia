@@ -66,6 +66,7 @@ public class VentaController {
         @ApiResponse(responseCode = "404", description = "Venta no encontrada")
     }) 
     public Venta actualizaVenta(@PathVariable int id, @RequestBody Venta venta){
+        venta.setId(id);
         return ventaService.updateVenta(venta);
     }
 

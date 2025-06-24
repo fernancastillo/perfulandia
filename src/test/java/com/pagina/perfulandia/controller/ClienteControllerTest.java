@@ -42,7 +42,7 @@ public class ClienteControllerTest {
         cliente.setAp_materno("Zapata");
         cliente.setCorreo("leonardorz@gmail.com");
         cliente.setContrasenha("5f45gf-6*23");
-        cliente.setNum_telefono(945812655);
+        cliente.setNum_telefono(945812651);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ClienteControllerTest {
             .andExpect(jsonPath("$[0].ap_materno").value("Zapata"))
             .andExpect(jsonPath("$[0].correo").value("leonardorz@gmail.com"))
             .andExpect(jsonPath("$[0].contrasenha").value("5f45gf-6*23"))
-            .andExpect(jsonPath("$[0].num_telefono").value(945812655));
+            .andExpect(jsonPath("$[0].num_telefono").value(945812651));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.pagina.perfulandia.Venta.service;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class VentaService {
     }
 
     public Venta saveVenta(Venta venta){
+        if (venta.getId() != 0) {
+        throw new IllegalArgumentException("No se debe enviar un ID al crear una nueva venta");
+    }
         return ventaRepository.save(venta);
     }
 
@@ -25,10 +29,18 @@ public class VentaService {
     }
 
     public Venta updateVenta (Venta venta){
+        Optional<Venta> existente = ventaRepository.findById(venta.getId());
+        if (!existente.isPresent()) {
+        throw new RuntimeException("Venta no encontrada");
+    }
         return ventaRepository.save(venta);
     }
 
     public String deleteVenta(int id){
+        Optional<Venta> existente = ventaRepository.findById(id);
+        if (!existente.isPresent()) {
+        throw new RuntimeException("Venta con ID " + id + " no encontrada");
+    }
         ventaRepository.deleteById(id);
         return "Venta eliminada";
     }
